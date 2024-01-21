@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,5 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('/blogs', BlogController::class)->names([
+    'index' => 'blog.index',
+    'create' => 'blog.create',
+    'store' => 'blog.store',
+    'edit' => 'blog.edit',
+    'update' => 'blog.update',
+    'destroy' => 'blog.destroy'
+])->middleware('auth');
 
 require __DIR__.'/auth.php';
