@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
+use Inertia\Inertia;
 
 class BlogController extends Controller
 {
@@ -13,7 +14,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+      return Inertia::render('Blog/Index', [
+        'blogs' => Blog::all()
+      ]);
     }
 
     /**
@@ -21,7 +24,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Blog/Create');
     }
 
     /**
@@ -29,7 +32,11 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Blog::create($validated);
+
+        return redirect()->route('blog.index');
     }
 
     /**
@@ -45,7 +52,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        return Inertia::render('Blog/Edit',['blog' => $blog]);
     }
 
     /**
@@ -53,7 +60,11 @@ class BlogController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        //
+        $validated = $request->validated();
+
+        $blog->update($validated);
+
+        return redirect()->route('blog.index');
     }
 
     /**
@@ -61,6 +72,8 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
+
+        return redirect()->route('blog.index');
     }
 }
