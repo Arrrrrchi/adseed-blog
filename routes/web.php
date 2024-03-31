@@ -46,3 +46,5 @@ Route::resource('/blogs', BlogController::class)->names([
 ])->middleware('auth');
 
 require __DIR__.'/auth.php';
+
+require __DIR__.'/admin.php';
