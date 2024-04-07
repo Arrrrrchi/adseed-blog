@@ -46,3 +46,18 @@ Route::resource('/blogs', BlogController::class)->names([
 ])->middleware('auth');
 
 require __DIR__.'/auth.php';
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Admin/Dashboard');
+    })->middleware(['auth:admin', 'verified'])->name('dashboard');
+
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });    
+
+    require __DIR__.'/admin.php';
+});
